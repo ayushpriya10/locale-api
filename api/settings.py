@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Date formatting
+DATETIME_FORMAT = '%d-%m-%Y %H:%M' 
+USE_L10N = False
+USE_TZ = False
 
 # Application definition
 
