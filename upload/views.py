@@ -1,4 +1,5 @@
 from datetime import datetime
+from itertools import islice
 
 from django.utils.dateparse import parse_datetime
 from django.utils.timezone import is_aware, make_aware
@@ -97,5 +98,89 @@ class FileUploadView(APIView):
             except:
                 print(row_num, row)
                 return Response({'status':'Could not save in the database. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        return Response({'status':'%s uploaded successfully.'%file_handler.name})
+
+
+class BulkFileUploadView(APIView):
+
+    parser_class = (FileUploadParser,)
+
+    def post(self, request):
+
+        if 'file' not in request.data:
+            raise ParseError("Empty content. Please attach a file to upload.")
+
+        file_handler = request.data['file']
+
+        content = file_handler.read().decode('utf-8').split('\n')
+
+        data = [i.split(',') for i in content[1:]]
+
+        quesryset = []
+
+        # data = data[:5]
+
+        for row_num, row in enumerate(data):
+            for index, val in enumerate(row):
+
+                try:
+
+                    if index in (0,1,2,3,4,5,6,7,8,11,12,18):
+                        row[index] = int(val)
+                    
+                    if index in (14,15,16,17):
+                        row[index] = float(val)
+                
+                    if index in (9,10,13):
+
+                        old_format = '%m/%d/%Y %H:%M' if '/' in val else '%m-%d-%Y %H:%M'
+                        
+                        row[index] = make_aware(parse_datetime(datetime.strptime(val, old_format).strftime('%Y-%m-%dT%H:%M:%S')))
+
+
+                except ValueError:
+                    row[index] = None
+
+            try:
+            
+                quesryset.append(
+                        Ride(
+                        id = row[0],
+                        user_id = row[1],
+                        vehicle_model_id = row[2],
+                        package_id = row[3],
+                        travel_type_id = row[4],
+                        from_area_id = row[5],
+                        to_area_id = row[6],
+                        from_city_id = row[7],
+                        to_city_id = row[8],
+                        from_date = row[9],
+                        to_date = row[10],
+                        online_booking = row[11],
+                        mobile_site_booking = row[12],
+                        booking_created = row[13],
+                        from_lat = row[14],
+                        from_long = row[15],
+                        to_lat = row[16],
+                        to_long = row[17],
+                        car_cancellation = row[18]
+                    )
+                )
+
+            except IndexError:
+                # print(row_num, row)
+                pass
+
+            except:
+                # print(row_num, row)
+                return Response({'status':'Could not save in the database. Please try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        try:
+            Ride.objects.bulk_create(quesryset)
+
+        except:
+            print("'id' already exists. Flush the DB to test with same data.")
+            return Response({'status':'Could not save in the database. There are duplicate entries in the sheet. Flush the DB and try again.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         return Response({'status':'%s uploaded successfully.'%file_handler.name})
