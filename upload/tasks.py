@@ -8,9 +8,6 @@ from django.utils.timezone import make_aware
 
 from .models import Ride
 
-@shared_task
-def add(x, y):
-    return x + y
 
 @shared_task
 def add_entries(data):
