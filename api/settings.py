@@ -18,6 +18,9 @@ CELERY_RESULT_BACKEND = 'amqp://iapevwrl:lYJvF_5rdggiKxkHDXZ6laXvVhv55njo@eagle.
 # CELERY_BROKER_URL = 'amqp://localhost'
 # CELERY_RESULT_BACKEND = 'amqp://localhost'
 BROKER_POOL_LIMIT = 1
+BROKER_CONNECTION_MAX_RETRIES = None
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ["json", "msgpack"]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
