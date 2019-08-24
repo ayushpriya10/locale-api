@@ -14,14 +14,16 @@ import os
 
 # Celery Configurations
 CELERY_BROKER_URL = os.environ['CLOUDAMQP_URL'] #'amqp://iapevwrl:lYJvF_5rdggiKxkHDXZ6laXvVhv55njo@eagle.rmq.cloudamqp.com/iapevwrl'
-CELERY_RESULT_BACKEND = os.environ['DATABASE_URL'].replace('postgres://', 'db+postgresql://') #os.environ['CLOUDAMQP_URL']
+CELERY_RESULT_BACKEND = os.environ['CLOUDAMQP_URL'] # os.environ['DATABASE_URL'].replace('postgres://', 'db+postgresql://')
+BROKER_HEARTBEAT = None
 CELERY_BROKER_HEARTBEAT = None
 # CELERY_BROKER_URL = 'amqp://localhost'
 # CELERY_RESULT_BACKEND = 'amqp://localhost'
 CELERY_BROKER_POOL_LIMIT = 1
 CELERY_BROKER_CONNECTION_MAX_RETRIES = None
-CELERY_TASK_SERIALIZER = "json"
-CELERY_ACCEPT_CONTENT = ["json", "msgpack"]
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ["json"]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
