@@ -204,7 +204,11 @@ class AsyncFileHandler(APIView):
 
         data = [i.split(',') for i in content[1:]]
 
+        print("Debug 1")
+
         task_id = add_entries.delay(data)
+
+        print("Debug 2")
 
                 
         return Response({
