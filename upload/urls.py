@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListRidesView, FileUploadView, FlushDatabaseView, BulkFileUploadView, TaskStatus, AsyncFileHandler
+from .views import ListRidesView, FlushDatabaseView, TaskStatus, AsyncFileHandler
 
 
 urlpatterns = [
