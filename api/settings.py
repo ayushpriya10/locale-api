@@ -13,12 +13,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Celery Configurations
-CELERY_BROKER_URL = os.environ['CLOUDAMQP_URL'] #'amqp://iapevwrl:lYJvF_5rdggiKxkHDXZ6laXvVhv55njo@eagle.rmq.cloudamqp.com/iapevwrl'
-CELERY_RESULT_BACKEND = os.environ['CLOUDAMQP_URL'] # os.environ['DATABASE_URL'].replace('postgres://', 'db+postgresql://')
+CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_RESULT_BACKEND = 'amqp://localhost'
 BROKER_HEARTBEAT = None
 CELERY_BROKER_HEARTBEAT = None
-# CELERY_BROKER_URL = 'amqp://localhost'
-# CELERY_RESULT_BACKEND = 'amqp://localhost'
 CELERY_BROKER_POOL_LIMIT = 1
 CELERY_BROKER_CONNECTION_MAX_RETRIES = None
 CELERY_TASK_SERIALIZER = 'json'
