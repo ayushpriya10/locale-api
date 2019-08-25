@@ -117,3 +117,6 @@ class RideDetails(APIView):
 
         except ValueError:
             return Response({'error':'Cannot resolve givrm ride_id into proper type. Please provide a valid ride_id.'})
+
+        except:
+            return Response({'error':'An error ocurred. Please try again with verified data.'})
